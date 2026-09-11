@@ -1,0 +1,7 @@
+services:
+  invite:
+    build: .
+    image: invite:local
+    ports:
+      - "8080:80"
+    restart: unless-stopped
