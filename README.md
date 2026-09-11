@@ -2,7 +2,7 @@
 
 Digital ring-ceremony invitation. Play the short film, then share the letter.
 
-**Live site (GitHub Pages):** https://techrohan2000-hub.github.io/Invite/
+**Live site (GitHub Pages):** https://RohanTekale.github.io/Invite/
 
 ## Run locally
 
@@ -42,8 +42,8 @@ Open http://localhost:8080
 Published image (after CI):
 
 ```bash
-docker pull ghcr.io/techrohan2000-hub/invite:latest
-docker run --rm -p 8080:80 ghcr.io/techrohan2000-hub/invite:latest
+docker pull ghcr.io/rohantekale/invite:latest
+docker run --rm -p 8080:80 ghcr.io/rohantekale/invite:latest
 ```
 
 RSVP and blessings are stored in each guest's browser (`localStorage`) for this first version. Connect Formspree, Google Sheets, or Firebase in `src/lib/storage.ts` when you want a shared guest list.
