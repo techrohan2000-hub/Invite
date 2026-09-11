@@ -31,7 +31,6 @@ jobs:
       - name: Build
         env:
           VITE_BASE: /Invite/
-        # Live URL: https://RohanTekale.github.io/Invite/
         run: npm run build
 
       - name: Add Pages helpers
