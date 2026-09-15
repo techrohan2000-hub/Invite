@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local reference media (keep invite cinematic + theme audio)
+*.mp4
+!public/cinematic/*.mp4
+*.mp3
+!public/audio/*.mp3
+.ref-frames/

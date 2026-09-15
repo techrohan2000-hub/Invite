@@ -41,13 +41,17 @@ export function Rings({ locked, compact = false }: RingsProps) {
 
         <motion.g
           className="ring-left"
-          initial={{ x: -88, y: 8, rotate: -38, opacity: 0 }}
+          initial={{ x: -96, y: 10, rotate: -42, opacity: 0 }}
           animate={
             locked
               ? { x: 0, y: 0, rotate: -26, opacity: 1 }
-              : { x: -70, y: 6, rotate: -34, opacity: 0.95 }
+              : { x: -78, y: 8, rotate: -36, opacity: 0.95 }
           }
-          transition={{ duration: 1.65, ease: [0.16, 1, 0.3, 1] }}
+          transition={
+            locked
+              ? { type: "spring", stiffness: 120, damping: 14, mass: 0.9 }
+              : { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+          }
           filter={`url(#ringGlow-${uid})`}
         >
           <ellipse
@@ -73,13 +77,17 @@ export function Rings({ locked, compact = false }: RingsProps) {
 
         <motion.g
           className="ring-right"
-          initial={{ x: 88, y: 8, rotate: 38, opacity: 0 }}
+          initial={{ x: 96, y: 10, rotate: 42, opacity: 0 }}
           animate={
             locked
               ? { x: 0, y: 0, rotate: 26, opacity: 1 }
-              : { x: 70, y: 6, rotate: 34, opacity: 0.95 }
+              : { x: 78, y: 8, rotate: 36, opacity: 0.95 }
           }
-          transition={{ duration: 1.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          transition={
+            locked
+              ? { type: "spring", stiffness: 120, damping: 14, mass: 0.9, delay: 0.06 }
+              : { duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
+          }
           filter={`url(#ringGlow-${uid})`}
         >
           <ellipse
@@ -106,7 +114,7 @@ export function Rings({ locked, compact = false }: RingsProps) {
             fill="#f8ebc4"
             initial={{ scale: 0, opacity: 0 }}
             animate={locked ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-            transition={{ delay: 1.2, duration: 0.45, type: "spring", stiffness: 260 }}
+            transition={{ delay: 0.85, duration: 0.5, type: "spring", stiffness: 280 }}
             style={{ transformOrigin: "188px 74px" }}
           />
         </motion.g>
@@ -114,7 +122,7 @@ export function Rings({ locked, compact = false }: RingsProps) {
         <motion.g
           initial={{ opacity: 0 }}
           animate={locked ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 1.15, duration: 0.4 }}
+          transition={{ delay: 0.8, duration: 0.35 }}
         >
           <ellipse
             cx="132"

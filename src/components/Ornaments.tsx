@@ -6,8 +6,17 @@ export function Divider({ className = "" }: OrnamentProps) {
   return (
     <div className={`divider ${className}`} aria-hidden="true">
       <span className="divider-line" />
-      <svg viewBox="0 0 24 24" className="divider-diamond">
-        <path d="M12 2.5 L21 12 L12 21.5 L3 12 Z" />
+      <svg viewBox="0 0 56 28" className="divider-floral">
+        {/* Marigold + lotus bud */}
+        <circle cx="14" cy="14" r="5" fill="#e8a04a" opacity="0.9" />
+        <circle cx="14" cy="14" r="2.5" fill="#f5d27a" />
+        <path
+          d="M28 14 C32 6 40 6 44 14 C40 22 32 22 28 14 Z"
+          fill="#e89aaa"
+          opacity="0.9"
+        />
+        <circle cx="36" cy="14" r="2.2" fill="#f5c8d0" />
+        <path d="M20 14 H28" stroke="#c4a46a" strokeWidth="1" />
       </svg>
       <span className="divider-line" />
     </div>
@@ -22,34 +31,21 @@ export function CornerFrame({ className = "" }: OrnamentProps) {
       fill="none"
       aria-hidden="true"
     >
-      <path
-        d="M28 88 C28 48 48 28 88 28"
-        stroke="currentColor"
-        strokeWidth="1.2"
-      />
-      <path d="M28 72h18M72 28v18" stroke="currentColor" strokeWidth="1" />
-      <path
-        d="M332 88 C332 48 312 28 272 28"
-        stroke="currentColor"
-        strokeWidth="1.2"
-      />
-      <path d="M332 72h-18M288 28v18" stroke="currentColor" strokeWidth="1" />
-      <path
-        d="M28 552 C28 592 48 612 88 612"
-        stroke="currentColor"
-        strokeWidth="1.2"
-      />
-      <path d="M28 568h18M72 612v-18" stroke="currentColor" strokeWidth="1" />
-      <path
-        d="M332 552 C332 592 312 612 272 612"
-        stroke="currentColor"
-        strokeWidth="1.2"
-      />
-      <path d="M332 568h-18M288 612v-18" stroke="currentColor" strokeWidth="1" />
-      <circle cx="28" cy="88" r="1.6" fill="currentColor" />
-      <circle cx="88" cy="28" r="1.6" fill="currentColor" />
-      <circle cx="332" cy="88" r="1.6" fill="currentColor" />
-      <circle cx="272" cy="28" r="1.6" fill="currentColor" />
+      <path d="M28 100 C28 48 52 28 100 28" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M36 82 C52 54 78 36 104 30" stroke="currentColor" strokeWidth="0.85" opacity="0.65" />
+      <ellipse cx="44" cy="56" rx="6" ry="9" fill="#e89aaa" opacity="0.55" transform="rotate(-24 44 56)" />
+      <ellipse cx="66" cy="40" rx="5" ry="8" fill="#e8a04a" opacity="0.5" transform="rotate(16 66 40)" />
+
+      <path d="M332 100 C332 48 308 28 260 28" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M324 82 C308 54 282 36 256 30" stroke="currentColor" strokeWidth="0.85" opacity="0.65" />
+      <ellipse cx="316" cy="56" rx="6" ry="9" fill="#e89aaa" opacity="0.55" transform="rotate(24 316 56)" />
+      <ellipse cx="294" cy="40" rx="5" ry="8" fill="#e8a04a" opacity="0.5" transform="rotate(-16 294 40)" />
+
+      <path d="M28 540 C28 592 52 612 100 612" stroke="currentColor" strokeWidth="1.2" />
+      <ellipse cx="44" cy="580" rx="6" ry="9" fill="#e89aaa" opacity="0.45" transform="rotate(20 44 580)" />
+
+      <path d="M332 540 C332 592 308 612 260 612" stroke="currentColor" strokeWidth="1.2" />
+      <ellipse cx="316" cy="580" rx="6" ry="9" fill="#e89aaa" opacity="0.45" transform="rotate(-20 316 580)" />
     </svg>
   )
 }
@@ -60,7 +56,7 @@ export function Grain() {
       <filter id="grain">
         <feTurbulence
           type="fractalNoise"
-          baseFrequency="0.85"
+          baseFrequency="0.9"
           numOctaves="2"
           stitchTiles="stitch"
         />

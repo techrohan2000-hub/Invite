@@ -6,13 +6,13 @@ import type { RsvpStatus } from "../lib/storage"
 import { loadRsvp, saveRsvp } from "../lib/storage"
 
 const OPTIONS: { id: RsvpStatus; title: string; hint: string }[] = [
-  { id: "yes", title: "We'll be there", hint: "Save a place for us" },
+  { id: "yes", title: "We'll be there", hint: "With aashirwad and joy" },
   { id: "no", title: "Wish we could", hint: "Sending love from afar" },
   { id: "blessing", title: "Blessings only", hint: "With you in spirit" },
 ]
 
 const THANKS: Record<RsvpStatus, string> = {
-  yes: "A place is saved for you. We cannot wait to celebrate together.",
+  yes: "A place is saved with love. We cannot wait to take your aashirwad.",
   no: "We'll miss you that morning — your blessings already mean the world.",
   blessing: "Your blessings are already part of our beginning.",
 }
@@ -54,7 +54,7 @@ export function Rsvp({ onCelebrate }: RsvpProps) {
   return (
     <section className="panel" id="rsvp">
       <p className="kicker gold">Your reply</p>
-      <h2 className="panel-title">Will you be with us?</h2>
+      <h2 className="panel-title">Will you join the morning?</h2>
       <p className="panel-copy">{invite.rsvpDeadline}</p>
 
       <AnimatePresence mode="wait">
@@ -70,10 +70,10 @@ export function Rsvp({ onCelebrate }: RsvpProps) {
             <div className="action-row">
               {status === "yes" && (
                 <>
-                  <a className="btn-secondary" href={googleCalendarUrl()} target="_blank" rel="noreferrer">
+                  <a className="btn-ghost" href={googleCalendarUrl()} target="_blank" rel="noreferrer">
                     Google Calendar
                   </a>
-                  <button className="btn-secondary" type="button" onClick={downloadIcs}>
+                  <button className="btn-ghost" type="button" onClick={downloadIcs}>
                     Apple / Outlook
                   </button>
                 </>
@@ -133,7 +133,7 @@ export function Rsvp({ onCelebrate }: RsvpProps) {
 
             {error ? <p className="form-error">{error}</p> : null}
 
-            <button className="cta cta-dark" type="submit">
+            <button className="btn-primary btn-wide" type="submit">
               Send reply
             </button>
           </motion.form>

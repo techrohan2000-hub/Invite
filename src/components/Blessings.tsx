@@ -32,7 +32,7 @@ export function Blessings() {
     <section className="panel" id="blessings">
       <p className="kicker gold">A little love</p>
       <h2 className="panel-title">Leave a blessing</h2>
-      <p className="panel-copy">A line of love they can read again on the day.</p>
+      <p className="panel-copy">A line they can hold close on the morning of their yes.</p>
 
       <form className="bless-form" onSubmit={submit}>
         <label className="field">
@@ -50,7 +50,7 @@ export function Blessings() {
           />
         </label>
         {error ? <p className="form-error">{error}</p> : null}
-        <button className="cta cta-dark" type="submit">
+        <button className="btn-primary btn-wide" type="submit">
           Send blessing
         </button>
       </form>
