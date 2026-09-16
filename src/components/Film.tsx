@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { invite } from "../config"
-import { startInviteMusic } from "./ThemeMusic"
+import { startInviteMusic } from "../lib/music"
 
 type FilmProps = {
   onComplete: () => void
@@ -14,7 +14,6 @@ type Beat = {
   kicker?: string
   title: string
   sub?: string
-  /** Cover baked-in video text with our nameplate */
   coverNames?: boolean
 }
 
@@ -22,8 +21,7 @@ const BASE = import.meta.env.BASE_URL
 const asset = (p: string) => `${BASE}${p.replace(/^\//, "")}`
 
 /**
- * Only WhatsApp Video 12.19.53 — name-free cuts + our overlays.
- * Wrong couple names never appear; we cover purple text zone when needed.
+ * Cinematic gate → “Open the doors” (user gesture unlocks music) → film → reveal.
  */
 export function Film({ onComplete, onBloom }: FilmProps) {
   const reduce = useReducedMotion()
@@ -68,11 +66,18 @@ export function Film({ onComplete, onBloom }: FilmProps) {
   const preloadRef = useRef<HTMLVideoElement>(null)
   const bloomed = useRef(false)
   const completeRef = useRef(onComplete)
+  const bloomRef = useRef(onBloom)
   completeRef.current = onComplete
+  bloomRef.current = onBloom
 
   const beat = beats[index]
   const next = beats[index + 1]
   const total = beats.length + 1
+
+  useEffect(() => {
+    if (!reduce) return
+    completeRef.current()
+  }, [reduce])
 
   useEffect(() => {
     if (phase !== "film" || !next || !preloadRef.current) return
@@ -137,7 +142,7 @@ export function Film({ onComplete, onBloom }: FilmProps) {
     }
     if (!bloomed.current) {
       bloomed.current = true
-      onBloom()
+      bloomRef.current()
     }
     setPhase("film")
     setIndex(0)
@@ -148,7 +153,7 @@ export function Film({ onComplete, onBloom }: FilmProps) {
     if (index >= beats.length - 1) {
       if (!bloomed.current) {
         bloomed.current = true
-        onBloom()
+        bloomRef.current()
       }
       setPhase("reveal")
       return
@@ -162,6 +167,8 @@ export function Film({ onComplete, onBloom }: FilmProps) {
   }
 
   const step = phase === "reveal" ? total : index + 1
+
+  if (reduce) return null
 
   return (
     <section className={`story-v ${phase === "reveal" ? "is-reveal" : ""}`}>
@@ -178,7 +185,12 @@ export function Film({ onComplete, onBloom }: FilmProps) {
               preload="auto"
             />
             <div className="story-v-veil story-v-veil-gate" />
-            <div className="story-v-card">
+            <motion.div
+              className="story-v-welcome"
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            >
               <p className="story-om">{invite.ganesh}</p>
               <p className="story-eyebrow">{invite.kicker}</p>
               <h1 className="story-names">
@@ -191,13 +203,14 @@ export function Film({ onComplete, onBloom }: FilmProps) {
                 <span> · </span>
                 Ambajogai
               </p>
-              <button className="story-cta" type="button" onClick={begin}>
-                Begin
+              <p className="story-whisper">{invite.whisper}</p>
+              <button className="story-cta story-cta-hero" type="button" onClick={begin}>
+                {invite.sealCta}
               </button>
-              <button className="story-link" type="button" onClick={skip}>
-                Open invitation
+              <button className="story-skip-quiet" type="button" onClick={skip}>
+                Skip to the invite
               </button>
-            </div>
+            </motion.div>
           </div>
         )}
 
@@ -214,7 +227,6 @@ export function Film({ onComplete, onBloom }: FilmProps) {
             <video ref={preloadRef} className="story-v-preload" muted playsInline aria-hidden="true" />
             <div className={`story-v-veil ${beat.coverNames ? "story-v-veil-cover" : "story-v-veil-soft"}`} />
 
-            {/* Hard cover over baked-in names / watermark zone */}
             {beat.coverNames ? (
               <div className="story-v-nameplate" aria-hidden="true">
                 <p className="story-v-nameplate-kicker">{invite.kicker}</p>
