@@ -1,13 +1,17 @@
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
+import { CoupleReveal } from "./components/CoupleReveal"
 import { Film } from "./components/Film"
 import { Letter } from "./components/Letter"
 import { Grain } from "./components/Ornaments"
 import { Petals } from "./components/Petals"
+import { RingBlessing } from "./components/RingBlessing"
 import { ThemeMusic } from "./components/ThemeMusic"
 
+type Act = "film" | "couple" | "ring" | "letter"
+
 export default function App() {
-  const [opened, setOpened] = useState(false)
+  const [act, setAct] = useState<Act>("film")
   const [filmKey, setFilmKey] = useState(0)
   const [petalMode, setPetalMode] = useState<"off" | "drift" | "burst">("drift")
 
@@ -17,14 +21,14 @@ export default function App() {
   }
 
   function replay() {
-    setOpened(false)
+    setAct("film")
     setPetalMode("drift")
     setFilmKey((key) => key + 1)
     window.scrollTo({ top: 0, behavior: "auto" })
   }
 
   return (
-    <div className={`app ${opened ? "is-open" : "is-sealed"}`}>
+    <div className={`app ${act === "letter" ? "is-open" : "is-sealed"}`}>
       <a className="skip" href="#invite">
         Skip to invitation
       </a>
@@ -32,7 +36,7 @@ export default function App() {
       <Petals mode={petalMode} />
       <ThemeMusic restartKey={filmKey} />
       <AnimatePresence mode="wait">
-        {!opened ? (
+        {act === "film" ? (
           <motion.div
             key={`film-${filmKey}`}
             className="scene"
@@ -42,12 +46,53 @@ export default function App() {
             <Film
               onBloom={() => bloom(4800, "drift")}
               onComplete={() => {
+                setPetalMode("drift")
+                setAct("couple")
+              }}
+              onSkipToInvite={() => {
                 setPetalMode("off")
-                setOpened(true)
+                setAct("letter")
               }}
             />
           </motion.div>
-        ) : (
+        ) : null}
+
+        {act === "couple" ? (
+          <motion.div
+            key="couple"
+            className="scene"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, filter: "blur(6px)" }}
+            transition={{ duration: 0.7 }}
+          >
+            <CoupleReveal
+              onBloom={() => bloom(3200, "drift")}
+              onContinue={() => setAct("ring")}
+            />
+          </motion.div>
+        ) : null}
+
+        {act === "ring" ? (
+          <motion.div
+            key="ring"
+            className="scene"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, filter: "blur(6px)" }}
+            transition={{ duration: 0.7 }}
+          >
+            <RingBlessing
+              onBloom={() => bloom(5000, "off")}
+              onComplete={() => {
+                setPetalMode("off")
+                setAct("letter")
+              }}
+            />
+          </motion.div>
+        ) : null}
+
+        {act === "letter" ? (
           <motion.div
             key="letter"
             className="scene"
@@ -60,7 +105,7 @@ export default function App() {
               onCelebrate={() => bloom(7000, "off")}
             />
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   )

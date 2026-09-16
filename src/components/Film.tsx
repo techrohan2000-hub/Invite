@@ -6,6 +6,7 @@ import { startInviteMusic } from "../lib/music"
 type FilmProps = {
   onComplete: () => void
   onBloom: () => void
+  onSkipToInvite?: () => void
 }
 
 type Beat = {
@@ -23,7 +24,7 @@ const asset = (p: string) => `${BASE}${p.replace(/^\//, "")}`
 /**
  * Cinematic gate → “Open the doors” (user gesture unlocks music) → film → reveal.
  */
-export function Film({ onComplete, onBloom }: FilmProps) {
+export function Film({ onComplete, onBloom, onSkipToInvite }: FilmProps) {
   const reduce = useReducedMotion()
   const beats = useMemo<Beat[]>(
     () => [
@@ -161,7 +162,14 @@ export function Film({ onComplete, onBloom }: FilmProps) {
     setIndex((v) => v + 1)
   }
 
-  function skip() {
+  function skipToInvite() {
+    startInviteMusic()
+    if (onSkipToInvite) onSkipToInvite()
+    else completeRef.current()
+  }
+
+  /** End film and continue to couple → ring → letter */
+  function continueJourney() {
     startInviteMusic()
     completeRef.current()
   }
@@ -207,7 +215,7 @@ export function Film({ onComplete, onBloom }: FilmProps) {
               <button className="story-cta story-cta-hero" type="button" onClick={begin}>
                 {invite.sealCta}
               </button>
-              <button className="story-skip-quiet" type="button" onClick={skip}>
+              <button className="story-skip-quiet" type="button" onClick={skipToInvite}>
                 Skip to the invite
               </button>
             </motion.div>
@@ -256,7 +264,7 @@ export function Film({ onComplete, onBloom }: FilmProps) {
               ) : null}
             </AnimatePresence>
 
-            <Chrome step={step} total={total} progress={progress} onSkip={skip} />
+            <Chrome step={step} total={total} progress={progress} onSkip={continueJourney} />
           </div>
         )}
 
@@ -302,11 +310,11 @@ export function Film({ onComplete, onBloom }: FilmProps) {
                 <br />
                 Ambajogai
               </p>
-              <button className="story-cta reveal-cta" type="button" onClick={skip}>
-                Open the invitation
+              <button className="story-cta reveal-cta" type="button" onClick={continueJourney}>
+                Continue
               </button>
             </motion.article>
-            <Chrome step={total} total={total} progress={progress} onSkip={skip} />
+            <Chrome step={total} total={total} progress={progress} onSkip={continueJourney} />
           </div>
         )}
       </div>
